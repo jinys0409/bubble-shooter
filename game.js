@@ -11,7 +11,7 @@
 
   const W = canvas.width, H = canvas.height;
   const COLORS = ['#ff5e7e', '#ffd166', '#80ed99', '#4cc9f0', '#c98bff'];
-  const DX = 40, DY = 36, R = 17, OX = 26, TOP = 26;
+  const DX = 40, DY = 36, R = 13, OX = 26, TOP = 26;
   const ROWS = 13, BASE_COLS = 11;
   const BEST_KEY = 'bubble-best';
 
@@ -40,7 +40,7 @@
     for (let r = 0; r < ROWS; r++) {
       grid.push([]);
       for (let c = 0; c < colsInRow(r); c++)
-        grid[r].push(r < 6 ? COLORS[Math.floor(Math.random() * COLORS.length)] : null);
+        grid[r].push(r < 5 ? COLORS[Math.floor(Math.random() * COLORS.length)] : null);
     }
     shooter = { x: W / 2, y: H - 40, color: COLORS[Math.floor(Math.random() * COLORS.length)] };
     proj = null; aim = { x: W / 2, y: 0 };

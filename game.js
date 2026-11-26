@@ -15,7 +15,7 @@
   const ROWS = 13, BASE_COLS = 11;
   const BEST_KEY = 'bubble-best';
 
-  let grid, shooter, proj, aim, score, shots, best, over;
+  let grid, shooter, proj, aim, score, shots, best, over, nextColor;
 
   const colsInRow = (r) => (r % 2 ? BASE_COLS - 1 : BASE_COLS);
   const cellX = (c, r) => OX + c * DX + (r % 2 ? DX / 2 : 0) + R;
@@ -43,6 +43,7 @@
         grid[r].push(r < 5 ? COLORS[Math.floor(Math.random() * COLORS.length)] : null);
     }
     shooter = { x: W / 2, y: H - 40, color: COLORS[Math.floor(Math.random() * COLORS.length)] };
+	nextColor = COLORS[Math.floor(Math.random() * COLORS.length)];
     proj = null; aim = { x: W / 2, y: 0 };
     draw();
   }
@@ -53,7 +54,8 @@
     const len = Math.hypot(dx, dy) || 1; dx /= len; dy /= len;
     proj = { x: shooter.x, y: shooter.y, vx: dx * 9, vy: dy * 9, color: shooter.color };
     shots++; shotsEl.textContent = String(shots);
-    shooter.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    shooter.color = nextColor;
+    nextColor = COLORS[Math.floor(Math.random() * COLORS.length)];
   }
 
   function snap() {
@@ -145,6 +147,20 @@
     // aim line
     ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.setLineDash([5, 5]);
     ctx.beginPath(); ctx.moveTo(shooter.x, shooter.y); ctx.lineTo(aim.x, aim.y); ctx.stroke(); ctx.setLineDash([]);
+const previewX = W / 2 + 95;
+const previewY = H - 40;
+
+ctx.save();
+ctx.font = '12px sans-serif';
+ctx.textAlign = 'center';
+ctx.fillStyle = '#e2e8f0';
+ctx.fillText('NEXT', previewX, previewY - R - 7);
+
+ctx.fillStyle = nextColor;
+ctx.beginPath();
+ctx.arc(previewX, previewY, R, 0, Math.PI * 2);
+ctx.fill();
+ctx.restore();
     // shooter
     ctx.save(); ctx.shadowBlur = 14; ctx.shadowColor = shooter.color;
     ctx.fillStyle = shooter.color; ctx.beginPath(); ctx.arc(shooter.x, shooter.y, R, 0, Math.PI * 2); ctx.fill(); ctx.restore();
